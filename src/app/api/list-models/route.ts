@@ -1,3 +1,10 @@
+interface ModelInfo {
+    name: string;
+    displayName: string;
+    description: string;
+    supportedGenerationMethods: string[];
+}
+
 export async function GET() {
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 
@@ -10,10 +17,10 @@ export async function GET() {
             `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
         );
 
-        const data = await response.json();
+        const data = await response.json() as { models?: ModelInfo[] };
 
         return Response.json({
-            models: data.models?.map((model: any) => ({
+            models: data.models?.map((model) => ({
                 name: model.name,
                 displayName: model.displayName,
                 description: model.description,
